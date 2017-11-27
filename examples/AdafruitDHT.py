@@ -36,7 +36,7 @@ def post_to_mcs(payload):
 			conn.connect()
 			not_connected = 0
 		except (httplib.HTTPException, socket.error) as ex:
-			print "Error: %s" % ex time.sleep(10)
+			print "Error: %s" 
 			 # sleep 10 seconds
 	conn.request("POST", "/mcs/v2/devices/" + deviceId + "/datapoints", json.dumps(payload), headers)
 	response = conn.getresponse()
@@ -61,8 +61,8 @@ else:
 # Try to grab a sensor reading.  Use the read_retry method which will retry up
 # to 15 times to get a sensor reading (waiting 2 seconds between each retry).
 while 1:
-	h0, t0= Adafruit_DHT.read_retry(sensor, pin)
-#	humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
+#	h0, t0= Adafruit_DHT.read_retry(sensor, pin)
+	humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
 
 # Un-comment the line below to convert the temperature to Fahrenheit.
 # temperature = temperature * 9/5.0 + 32
@@ -73,8 +73,8 @@ while 1:
 # If this happens try again!
 	if humidity is not None and temperature is not None:
 	    print('Temp={0:0.1f}*  Humidity={1:0.1f}%'.format(temperature, humidity))
-	    payload = {"datapoints":[{"dataChnId":"Humidity","values":{"value":h0}},
-		      {"dataChnId":"Temperature","values":{"value":t0}}]} 
+	    payload = {"datapoints":[{"dataChnId":"Humidity","values":{"value":humidity}},
+		      {"dataChnId":"Temperature","values":{"value":temperature}}]} 
 	    post_to_mcs(payload)
 	    time.sleep(1)
 	else:
